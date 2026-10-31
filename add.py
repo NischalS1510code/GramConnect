@@ -490,6 +490,7 @@ SUBMIT = """
 
 @app.route("/submit", methods=["GET", "POST"])
 
+
 def submit():
 
     if request.method == "POST":
@@ -500,40 +501,40 @@ def submit():
         subject = request.form.get("subject", "").strip()
         description = request.form.get("description", "").strip()
 
-        # Check empty fields
+        # 1. Check empty fields
         if not all([name, phone, category, subject, description]):
             flash("Please fill all required fields.", "error")
             return redirect(url_for("submit"))
 
-        # Validate name
+        # 2. Validate name
         name_pattern = r"[^\W\d_]+(?:[ .'-][^\W\d_]+)*"
 
         if not re.fullmatch(name_pattern, name, flags=re.UNICODE):
-            flash("Invalid name. Use letters only.", "error")
+            flash("Invalid name. Use valid letters only.", "error")
             return redirect(url_for("submit"))
 
         if len(name) < 2 or len(name) > 100:
             flash("Name must contain 2 to 100 characters.", "error")
             return redirect(url_for("submit"))
 
-        # Validate Indian mobile number
+        # 3. Validate Indian mobile number
+        if not re.fullmatch(r"(?:\+91[- ]?)?[6-9][0-9]{9}", phone):
+            flash("Enter a valid Indian mobile number.", "error")
+            return redirect(url_for("submit"))
+
         phone_digits = re.sub(r"\D", "", phone)
 
-        if len(phone_digits) == 12 and phone_digits.startswith("91"):
+        if phone_digits.startswith("91") and len(phone_digits) == 12:
             phone_digits = phone_digits[2:]
-
-        if not re.fullmatch(r"[6-9][0-9]{9}", phone_digits):
-            flash("Enter a valid 10-digit Indian mobile number.", "error")
-            return redirect(url_for("submit"))
 
         phone = phone_digits
 
-        # Validate category
+        # 4. Validate category
         if category not in CATEGORIES:
             flash("Please select a valid category.", "error")
             return redirect(url_for("submit"))
 
-        # Validate subject
+        # 5. Validate subject
         if len(subject) < 5 or len(subject) > 150:
             flash("Subject must contain 5 to 150 characters.", "error")
             return redirect(url_for("submit"))
@@ -542,7 +543,7 @@ def submit():
             flash("Please enter a meaningful subject.", "error")
             return redirect(url_for("submit"))
 
-        # Validate description
+        # 6. Validate description
         if len(description) < 20 or len(description) > 5000:
             flash("Description must contain 20 to 5000 characters.", "error")
             return redirect(url_for("submit"))
@@ -551,15 +552,12 @@ def submit():
             flash("Please enter a meaningful complaint or suggestion.", "error")
             return redirect(url_for("submit"))
 
-        # KEEP YOUR EXISTING DATABASE INSERT AND TRACKING CODE HERE
-
-    return render_template("index.html")
-
-
+        # 7. Generate unique tracking ID
         tracking_id = "GC-" + secrets.token_hex(4).upper()
 
         now = datetime.now().strftime("%d %b %Y, %I:%M %p")
 
+        # 8. Save complaint to database
         db = get_db()
 
         cursor = db.execute("""
@@ -574,6 +572,7 @@ def submit():
 
         submission_id = cursor.lastrowid
 
+        # 9. Save initial progress history
         db.execute("""
             INSERT INTO status_history
             (submission_id, status, note, changed_at)
@@ -587,6 +586,7 @@ def submit():
 
         db.commit()
 
+        # 10. Show successful submission page
         return redirect(url_for(
             "submitted",
             tracking_id=tracking_id
