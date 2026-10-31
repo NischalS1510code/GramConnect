@@ -362,7 +362,47 @@ td {
 <div class="footer">
     GramConnect | Your Voice. Your Village. Your Future.
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const form = document.querySelector("form");
+
+    if (!form) return;
+
+    form.addEventListener("submit", function (event) {
+
+        const name = form.querySelector('[name="name"]').value.trim();
+        const phone = form.querySelector('[name="phone"]').value.trim();
+        const subject = form.querySelector('[name="subject"]').value.trim();
+        const description = form.querySelector('[name="description"]').value.trim();
+
+        const namePattern = /^[^\W\d_]+(?:[ .'-][^\W\d_]+)*$/u;
+        const phonePattern = /^(?:\+91[- ]?)?[6-9][0-9]{9}$/;
+
+        let error = "";
+
+        if (!namePattern.test(name) || name.length < 2 || name.length > 100) {
+            error = "Please enter a valid name. Numbers and special symbols are not allowed.";
+        }
+        else if (!phonePattern.test(phone)) {
+            error = "Please enter a valid 10-digit Indian mobile number.";
+        }
+        else if (subject.length < 5 || subject.length > 150) {
+            error = "Subject must contain 5 to 150 characters.";
+        }
+        else if (description.length < 20 || description.length > 5000) {
+            error = "Description must contain 20 to 5000 characters.";
+        }
+
+        if (error) {
+            event.preventDefault();
+            alert(error);
+        }
+
+    });
+
+});
+</script>
 </body>
 </html>
 """
