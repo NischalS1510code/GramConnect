@@ -1,0 +1,1257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11110f">
+<title>GramConnect | Gram Panchayat Suggestion Box</title>
+
+<style>
+:root {
+  --bg: #11110f;
+  --panel: #1b1b18;
+  --gold: #f2bd32;
+  --cream: #f7f1df;
+  --muted: #aaa79a;
+  --line: #39372d;
+  --green: #9bbd75;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 80% 5%, #292315 0, transparent 28%),
+    linear-gradient(145deg, #10100f, #171713 65%, #10100f);
+  color: var(--cream);
+  font-family: Inter, system-ui, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .12;
+  background-image:
+    linear-gradient(30deg, transparent 48%, #8d702b 49%, transparent 50%),
+    linear-gradient(150deg, transparent 48%, #8d702b 49%, transparent 50%);
+  background-size: 70px 70px;
+  mask-image: linear-gradient(to bottom, black, transparent 75%);
+}
+
+.wrap {
+  width: min(1120px, 92%);
+  margin: auto;
+  position: relative;
+}
+
+/* NAVIGATION */
+
+.topbar {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ffffff12;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crest {
+  height: 44px;
+  width: 44px;
+  border: 1px solid #866a25;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #302712, #171611);
+  font-size: 24px;
+}
+
+.brand strong {
+  display: block;
+  letter-spacing: 1.3px;
+  font-size: 15px;
+}
+
+.brand small {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1.8px;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav a {
+  color: #d7d1bd;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.nav a:hover {
+  color: var(--gold);
+}
+
+.nav .navbtn {
+  border: 1px solid #74591c;
+  border-radius: 30px;
+  padding: 10px 17px;
+  color: var(--gold);
+}
+
+/* BUTTONS */
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #f5ca51, #d99a16);
+  color: #1b1608;
+  box-shadow: 0 8px 25px #d99a162b;
+}
+
+.btn.primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.07);
+}
+
+.btn.ghost {
+  border: 1px solid #51472d;
+  background: #1b1b17;
+  color: #e7dfc8;
+}
+
+.full {
+  width: 100%;
+}
+
+/* HERO SECTION */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  gap: 55px;
+  align-items: center;
+  padding: 64px 0 52px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -2px;
+  margin: 16px 0;
+}
+
+.hero h1 span {
+  color: var(--gold);
+}
+
+.hero p {
+  color: #c0bba9;
+  line-height: 1.75;
+  max-width: 530px;
+  font-size: 15px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+.trust {
+  display: flex;
+  gap: 24px;
+  margin-top: 30px;
+  color: #aaa590;
+  font-size: 11px;
+}
+
+.trust span:before {
+  content: "✓";
+  color: var(--green);
+  margin-right: 7px;
+  font-weight: bold;
+}
+
+/* PHONE MOCKUP */
+
+.phone-area {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.halo {
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
+  background: #dba51c12;
+  filter: blur(24px);
+  top: 12%;
+}
+
+.phone {
+  position: relative;
+  width: 285px;
+  border: 1px solid #8e8b7d;
+  border-radius: 34px;
+  padding: 12px;
+  background: #090a09;
+  box-shadow: 0 25px 65px #000b, 0 0 0 5px #292820;
+  transform: rotate(2deg);
+}
+
+.speaker {
+  width: 74px;
+  height: 15px;
+  background: #030303;
+  border-radius: 20px;
+  margin: 0 auto 10px;
+}
+
+.screen {
+  background: #10110f;
+  border-radius: 23px;
+  min-height: 455px;
+  padding: 17px 14px;
+  overflow: hidden;
+}
+
+.phonehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: white;
+}
+
+.phonehead b {
+  font-size: 12px;
+}
+
+.mini-title {
+  text-align: center;
+  margin: 30px 0 17px;
+}
+
+.mini-title strong {
+  display: block;
+  color: var(--gold);
+  font-size: 19px;
+}
+
+.mini-title small {
+  font-size: 9px;
+  color: #c9c3b1;
+  letter-spacing: 1px;
+}
+
+.mini-card {
+  background: #22221e;
+  border: 1px solid #49412b;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.mini-card label {
+  display: block;
+  color: var(--gold);
+  font-size: 9px;
+  margin-bottom: 8px;
+}
+
+.mini-card div {
+  height: 7px;
+  background: #5a574b;
+  border-radius: 5px;
+  margin: 8px 0;
+}
+
+.mini-card div:nth-child(3) {
+  width: 72%;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mini-tile {
+  background: #24241f;
+  border: 1px solid #49412b;
+  border-radius: 10px;
+  text-align: center;
+  padding: 12px 3px;
+  font-size: 18px;
+}
+
+.mini-tile small {
+  display: block;
+  font-size: 8px;
+  color: #d6cfb8;
+  margin-top: 5px;
+}
+
+.phone-foot {
+  height: 4px;
+  width: 75px;
+  background: #aaa;
+  border-radius: 5px;
+  margin: 15px auto 0;
+}
+
+/* SUGGESTION SECTION */
+
+.section {
+  padding: 42px 0 68px;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-head h2 {
+  font-size: 29px;
+  margin: 9px 0;
+}
+
+.section-head p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  gap: 22px;
+}
+
+.panel {
+  background: linear-gradient(145deg, #20201b, #181815);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 25px;
+  box-shadow: 0 14px 40px #0003;
+}
+
+.panel h3 {
+  margin: 0 0 7px;
+  font-size: 19px;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 22px;
+}
+
+/* FORM */
+
+.field {
+  margin: 15px 0;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: #ded6c2;
+  margin-bottom: 8px;
+  font-weight: 650;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid #454237;
+  background: #11120f;
+  color: #f4efdf;
+  padding: 13px 14px;
+  border-radius: 9px;
+  outline: none;
+  font: inherit;
+  font-size: 13px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px #eab52a18;
+}
+
+.field textarea {
+  min-height: 118px;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #777466;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.check {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  color: #bcb6a5;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 15px 0;
+}
+
+.check input {
+  accent-color: var(--gold);
+  margin-top: 2px;
+}
+
+.form-note {
+  font-size: 10px;
+  color: #8f8a7b;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* COMMUNITY IDEAS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stat {
+  background: #141510;
+  border: 1px solid #353327;
+  border-radius: 11px;
+  padding: 13px;
+}
+
+.stat b {
+  display: block;
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.stat small {
+  color: #aaa48f;
+  font-size: 10px;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.suggestion {
+  padding: 14px;
+  border: 1px solid #37352b;
+  background: #171813;
+  border-radius: 11px;
+}
+
+.suggestion-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.suggestion h4 {
+  font-size: 13px;
+  margin: 0;
+}
+
+.tag {
+  font-size: 9px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background: #3b3219;
+  color: #f2c44c;
+  white-space: nowrap;
+}
+
+.suggestion p {
+  font-size: 11px;
+  color: #b6b09f;
+  line-height: 1.5;
+  margin: 9px 0;
+}
+
+.suggestion small {
+  color: #817d70;
+  font-size: 9px;
+}
+
+/* HOW IT WORKS */
+
+.how {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.step {
+  border: 1px solid #383529;
+  background: #1a1a16;
+  border-radius: 13px;
+  padding: 18px;
+}
+
+.step i {
+  font-style: normal;
+  font-size: 22px;
+}
+
+.step b {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 13px;
+}
+
+.step p {
+  font-size: 11px;
+  color: #aaa48f;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* FOOTER */
+
+.footer {
+  border-top: 1px solid #ffffff15;
+  padding: 23px 0 32px;
+  color: #827d6e;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* NOTIFICATION */
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  background: #e8b83c;
+  color: #17140b;
+  padding: 12px 18px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: .25s;
+  z-index: 10;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* MOBILE RESPONSIVENESS */
+
+@media(max-width:760px) {
+  .nav {
+    gap: 12px;
+  }
+
+  .nav a:not(.navbtn) {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding: 48px 0 35px;
+  }
+
+  .hero-copy {
+    text-align: center;
+  }
+
+  .hero p {
+    margin: 0 auto;
+  }
+
+  .actions,
+  .trust {
+    justify-content: center;
+  }
+
+  .phone {
+    width: 260px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding-top: 28px;
+  }
+
+  .how {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    letter-spacing: -1px;
+  }
+}
+
+@media(max-width:430px) {
+  .two {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 19px;
+  }
+
+  .stats {
+    gap: 6px;
+  }
+
+  .stat {
+    padding: 10px;
+  }
+
+  .stat b {
+    font-size: 18px;
+  }
+
+  .brand small {
+    font-size: 8px;
+  }
+
+  .hero h1 {
+    font-size: 39px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<header class="wrap topbar">
+
+  <div class="brand">
+    <div class="crest">🏛️</div>
+
+    <div>
+      <strong>GRAMCONNECT</strong>
+      <small>GRAM PANCHAYAT </small>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="#how">How it works</a>
+    <a href="#suggestions">Suggestions</a>
+    <a class="navbtn" href="#submit">Share an idea ↗</a>
+  </nav>
+
+</header>
+
+<main>
+
+<!-- HOME SECTION -->
+<section class="wrap hero">
+
+  <div class="hero-copy">
+
+    <div class="eyebrow">
+      Your village. Your voice.
+    </div>
+
+    <h1>
+      Let’s build a<br>
+      <span>better village</span><br>
+      together.
+    </h1>
+
+    <p>
+      A simple, transparent suggestion box for your
+      Gram Panchayat. Share ideas, report local issues,
+      and help shape the future of your community.
+    </p>
+
+    <div class="actions">
+      <a class="btn primary" href="#submit">
+        ＋ Submit a suggestion
+      </a>
+
+      <a class="btn ghost" href="#suggestions">
+        Explore community ideas
+      </a>
+    </div>
+
+    <div class="trust">
+      <span>Easy to use</span>
+      <span>Community-first</span>
+      <span>Your voice matters</span>
+    </div>
+
+  </div>
+
+  <!-- MOBILE MOCKUP -->
+  <div class="phone-area">
+
+    <div class="halo"></div>
+
+    <div class="phone">
+
+      <div class="speaker"></div>
+
+      <div class="screen">
+
+        <div class="phonehead">
+          <b>🏛️ GramVaani</b>
+          <span>● ● ●</span>
+        </div>
+
+        <div class="mini-title">
+          <strong>YOUR VOICE</strong>
+          <small>ONE VILLAGE • ONE VISION</small>
+        </div>
+
+        <div class="mini-card">
+          <label>COMMUNITY SUGGESTION BOX</label>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+
+        <div class="mini-grid">
+
+          <div class="mini-tile">
+            💧
+            <small>Water</small>
+          </div>
+
+          <div class="mini-tile">
+            🛣️
+            <small>Roads</small>
+          </div>
+
+          <div class="mini-tile">
+            💡
+            <small>Lighting</small>
+          </div>
+
+          <div class="mini-tile">
+            🧹
+            <small>Cleanliness</small>
+          </div>
+
+          <div class="mini-tile">
+            🏥
+            <small>Health</small>
+          </div>
+
+          <div class="mini-tile">
+            🎓
+            <small>Education</small>
+          </div>
+
+        </div>
+
+        <div class="mini-card" style="margin-top:12px">
+          <label>MAKE A DIFFERENCE</label>
+          <div style="width:90%"></div>
+          <div style="width:60%"></div>
+        </div>
+
+        <div class="phone-foot"></div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SUGGESTION BOX -->
+<section class="wrap section" id="submit">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      Speak up • Be heard
+    </div>
+
+    <h2>Community Suggestion Box</h2>
+
+    <p>
+      Tell your Gram Panchayat what would make
+      your village a better place to live.
+    </p>
+
+  </div>
+
+  <div class="content-grid">
+
+    <!-- FORM -->
+    <div class="panel">
+
+      <h3>Share your suggestion</h3>
+
+      <p class="sub">
+        Please provide clear details so the Panchayat
+        can understand your idea.
+      </p>
+
+      <form id="suggestionForm">
+
+        <div class="two">
+
+          <div class="field">
+            <label for="person">Your name (optional)</label>
+            <input
+              id="person"
+              maxlength="50"
+              placeholder="e.g. Ramesh"
+            >
+          </div>
+
+          <div class="field">
+            <label for="ward">Ward / Area</label>
+            <input
+              id="ward"
+              maxlength="60"
+              placeholder="e.g. Ward 4, Main Road"
+            >
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label for="category">
+            Suggestion category *
+          </label>
+
+          <select id="category" required>
+
+            <option value="">Choose a category</option>
+            <option>Water supply</option>
+            <option>Roads & transport</option>
+            <option>Street lights</option>
+            <option>Sanitation & waste</option>
+            <option>Health & public facilities</option>
+            <option>Education</option>
+            <option>Environment & parks</option>
+            <option>Women & child welfare</option>
+            <option>Other</option>
+
+          </select>
+
+        </div>
+
+        <div class="field">
+
+          <label for="subject">
+            Suggestion title *
+          </label>
+
+          <input
+            id="subject"
+            required
+            maxlength="90"
+            placeholder="Give your suggestion a short title"
+          >
+
+        </div>
+
+        <div class="field">
+
+          <label for="details">
+            Describe your suggestion *
+          </label>
+
+          <textarea
+            id="details"
+            required
+            maxlength="1000"
+            placeholder="What is the issue? Where is it happening? What change would you like to see?"
+          ></textarea>
+
+        </div>
+
+        <label class="check">
+
+          <input id="anonymous" type="checkbox">
+
+          <span>
+            Submit anonymously. Your name will not be
+            shown with this suggestion.
+          </span>
+
+        </label>
+
+        <button class="btn primary full" type="submit">
+          Submit suggestion →
+        </button>
+
+        <p class="form-note">
+          Demo website: submissions are saved only in this
+          browser on this device. Connect a secure backend
+          to deliver them to your Gram Panchayat.
+        </p>
+
+      </form>
+
+    </div>
+
+    <!-- COMMUNITY IDEAS -->
+    <aside class="panel" id="suggestions">
+
+      <h3>Community ideas</h3>
+
+      <p class="sub">
+        A local preview of suggestions submitted
+        through this demo.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat">
+          <b id="totalCount">03</b>
+          <small>Suggestions</small>
+        </div>
+
+        <div class="stat">
+          <b id="categoryCount">03</b>
+          <small>Categories</small>
+        </div>
+
+        <div class="stat">
+          <b>100%</b>
+          <small>Community voice</small>
+        </div>
+
+      </div>
+
+      <div class="feed" id="feed">
+
+        <article class="suggestion">
+
+          <div class="suggestion-top">
+            <h4>Repair the road near the school</h4>
+            <span class="tag">Roads & transport</span>
+          </div>
+
+          <p>
+            Fill potholes and improve the road markings
+            so children can travel safely.
+          </p>
+
+          <small>Ward 2 • Community idea</small>
+
+        </article>
+
+        <article class="suggestion">
+
+          <div class="suggestion-top">
+            <h4>Install more street lights</h4>
+            <span class="tag">Street lights</span>
+          </div>
+
+          <p>
+            Add solar street lights near the bus stop
+            and public pathway.
+          </p>
+
+          <small>Ward 5 • Community idea</small>
+
+        </article>
+
+        <article class="suggestion">
+
+          <div class="suggestion-top">
+            <h4>Weekly village clean-up</h4>
+            <span class="tag">Sanitation & waste</span>
+          </div>
+
+          <p>
+            Arrange regular waste collection and
+            a monthly cleanliness drive.
+          </p>
+
+          <small>Village centre • Community idea</small>
+
+        </article>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div id="how" class="how">
+
+    <div class="step">
+      <i>✍️</i>
+      <b>1. Share your idea</b>
+      <p>
+        Choose a category and explain the local issue
+        or improvement you have in mind.
+      </p>
+    </div>
+
+    <div class="step">
+      <i>🤝</i>
+      <b>2. Build a conversation</b>
+      <p>
+        Community members and Panchayat representatives
+        can discuss possible solutions.
+      </p>
+    </div>
+
+    <div class="step">
+      <i>🌱</i>
+      <b>3. Improve your village</b>
+      <p>
+        Turn good ideas into practical actions through
+        community participation.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="wrap footer">
+
+  <span>
+    © 2026 GramVaani • A community participation concept
+  </span>
+
+  <span>
+    Designed for inclusive village development
+  </span>
+
+</footer>
+
+<div class="toast" id="toast" role="status">
+  Your suggestion has been added to this demo.
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+const form = document.getElementById('suggestionForm');
+const feed = document.getElementById('feed');
+const toast = document.getElementById('toast');
+
+// GET SAVED SUGGESTIONS
+function getSaved() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem('gramvaaniSuggestions') || '[]'
+    );
+
+  } catch(e) {
+
+    return [];
+
+  }
+
+}
+
+// DISPLAY SUGGESTIONS
+function render() {
+
+  const items = getSaved();
+
+  items.slice().reverse().forEach((item) => {
+
+    if (
+      document.querySelector(
+        '[data-id="' + item.id + '"]'
+      )
+    ) return;
+
+    const article = document.createElement('article');
+    article.className = 'suggestion';
+    article.dataset.id = item.id;
+
+    const top = document.createElement('div');
+    top.className = 'suggestion-top';
+
+    const h = document.createElement('h4');
+    h.textContent = item.subject;
+
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = item.category;
+
+    top.append(h, tag);
+
+    const p = document.createElement('p');
+    p.textContent = item.details;
+
+    const small = document.createElement('small');
+
+    small.textContent =
+      (item.ward || 'Village community') +
+      ' • ' +
+      (item.anonymous ? 'Anonymous' : 'Community suggestion');
+
+    article.append(top, p, small);
+
+    feed.prepend(article);
+
+  });
+
+  // UPDATE TOTAL COUNT
+  document.getElementById('totalCount').textContent =
+    String(3 + items.length).padStart(2, '0');
+
+  // UPDATE CATEGORY COUNT
+  const categories = new Set([
+    'Roads & transport',
+    'Street lights',
+    'Sanitation & waste',
+    ...items.map(x => x.category)
+  ]);
+
+  document.getElementById('categoryCount').textContent =
+    String(categories.size).padStart(2, '0');
+
+}
+
+// SUBMIT FORM
+form.addEventListener('submit', (e) => {
+
+  e.preventDefault();
+
+  const item = {
+
+    id: Date.now().toString(),
+
+    person:
+      document.getElementById('person').value.trim(),
+
+    ward:
+      document.getElementById('ward').value.trim(),
+
+    category:
+      document.getElementById('category').value,
+
+    subject:
+      document.getElementById('subject').value.trim(),
+
+    details:
+      document.getElementById('details').value.trim(),
+
+    anonymous:
+      document.getElementById('anonymous').checked
+
+  };
+
+  const items = getSaved();
+
+  items.push(item);
+
+  try {
+
+    localStorage.setItem(
+      'gramvaaniSuggestions',
+      JSON.stringify(items)
+    );
+
+  } catch(err) {
+
+    alert(
+      'Could not save in this browser. Please check browser storage settings.'
+    );
+
+    return;
+
+  }
+
+  form.reset();
+
+  render();
+
+  toast.classList.add('show');
+
+  setTimeout(() => {
+
+    toast.classList.remove('show');
+
+  }, 2800);
+
+});
+
+// LOAD SAVED SUGGESTIONS WHEN PAGE OPENS
+render();
+
+</script>
+
+</body>
+</html>
