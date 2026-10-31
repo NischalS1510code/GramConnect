@@ -2,6 +2,7 @@
 import os
 import sqlite3
 import secrets
+import re
 from datetime import datetime
 from functools import wraps
 
@@ -444,10 +445,23 @@ SUBMIT = """
     <form method="POST">
 
         <label>Your Name *</label>
-        <input name="name" maxlength="100" required>
-
+       <input
+            name="name"
+            type="text"
+            minlength="2"
+            maxlength="100"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required>
         <label>Phone Number *</label>
-        <input name="phone" maxlength="20" required>
+        <input
+            name="phone"
+            type="tel"
+            maxlength="15"
+            placeholder="Enter 10-digit mobile number"
+            pattern="(?:\+91[- ]?)?[6-9][0-9]{9}"
+            title="Enter a valid 10-digit Indian mobile number"
+            required>
 
         <label>Category *</label>
         <select name="category" required>
@@ -458,12 +472,14 @@ SUBMIT = """
         </select>
 
         <label>Subject *</label>
-        <input name="subject" maxlength="150" required>
-
+        <input name="subject" minlength="5" maxlength="150" required>
         <label>Description *</label>
-        <textarea name="description" maxlength="5000"
-                  placeholder="Explain your complaint or suggestion..."
-                  required></textarea>
+        <textarea
+            name="description"
+            minlength="20"
+            maxlength="5000"
+            placeholder="Explain your complaint or suggestion..."
+            required></textarea>
 
         <br><br>
         <button type="submit">Submit</button>
@@ -484,13 +500,56 @@ def submit():
         subject = request.form.get("subject", "").strip()
         description = request.form.get("description", "").strip()
 
-        if not all([name, phone, category, subject, description]):
-            flash("Please fill all required fields.", "error")
-            return redirect(url_for("submit"))
+       # Check empty fields
+if not all([name, phone, category, subject, description]):
+    flash("Please fill all required fields.", "error")
+    return redirect(url_for("submit"))
 
-        if category not in CATEGORIES:
-            flash("Please select a valid category.", "error")
-            return redirect(url_for("submit"))
+# Validate name: letters, spaces, dots, hyphens and apostrophes
+name_pattern = r"[^\W\d_]+(?:[ .'-][^\W\d_]+)*"
+
+if not re.fullmatch(name_pattern, name, flags=re.UNICODE):
+    flash("Invalid name. Use letters only.", "error")
+    return redirect(url_for("submit"))
+
+if len(name) < 2 or len(name) > 100:
+    flash("Name must contain 2 to 100 characters.", "error")
+    return redirect(url_for("submit"))
+
+# Validate Indian mobile number
+phone_digits = re.sub(r"\D", "", phone)
+
+if len(phone_digits) == 12 and phone_digits.startswith("91"):
+    phone_digits = phone_digits[2:]
+
+if not re.fullmatch(r"[6-9][0-9]{9}", phone_digits):
+    flash("Enter a valid 10-digit Indian mobile number.", "error")
+    return redirect(url_for("submit"))
+
+phone = phone_digits
+
+# Validate category
+if category not in CATEGORIES:
+    flash("Please select a valid category.", "error")
+    return redirect(url_for("submit"))
+
+# Validate subject
+if len(subject) < 5 or len(subject) > 150:
+    flash("Subject must contain 5 to 150 characters.", "error")
+    return redirect(url_for("submit"))
+
+if sum(ch.isalpha() for ch in subject) < 3:
+    flash("Please enter a meaningful subject.", "error")
+    return redirect(url_for("submit"))
+
+# Validate description
+if len(description) < 20 or len(description) > 5000:
+    flash("Description must contain 20 to 5000 characters.", "error")
+    return redirect(url_for("submit"))
+
+if sum(ch.isalpha() for ch in description) < 10:
+    flash("Please enter a meaningful complaint or suggestion.", "error")
+    return redirect(url_for("submit"))
 
         tracking_id = "GC-" + secrets.token_hex(4).upper()
 
