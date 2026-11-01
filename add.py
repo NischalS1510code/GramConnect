@@ -1118,7 +1118,7 @@ if __name__ == "__main__":
     print("--------------------------------")
     print("Website: http://127.0.0.1:5000")
     print("Admin:   http://127.0.0.1:5000/admin")
-    print("Default admin password: asdf234")
+    print("Default admin password: asdf1234")
     print("--------------------------------")
 
     app.run(debug=True)
