@@ -21,7 +21,7 @@ DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 ADMIN_PASSWORD = os.environ.get(
     "GRAMCONNECT_ADMIN_PASSWORD",
-    "change-this-password"
+    "ASDF1234"
 )
 
 STATUSES = [
