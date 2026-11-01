@@ -21,7 +21,7 @@ DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 ADMIN_PASSWORD = os.environ.get(
     "GRAMCONNECT_ADMIN_PASSWORD",
-    "ASDF1234"
+    "asdf1234"
 )
 
 STATUSES = [
@@ -1118,7 +1118,7 @@ if __name__ == "__main__":
     print("--------------------------------")
     print("Website: http://127.0.0.1:5000")
     print("Admin:   http://127.0.0.1:5000/admin")
-    print("Default admin password: ASDF234")
+    print("Default admin password: asdf234")
     print("--------------------------------")
 
     app.run(debug=True)
